@@ -1,3 +1,3 @@
-lab_management/app.db
-lab_management/generated_files
-lab_management/__pycache__
+**/app.db
+**/generated_files/
+**/__pycache__/
