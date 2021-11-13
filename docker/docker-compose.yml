@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  iot:
+    container_name: iot_service
+    build: iot_container
+    ports:
+      - 3000:3000
+    volumes:
+      - ../lab_management:/usr/local/lab_management/

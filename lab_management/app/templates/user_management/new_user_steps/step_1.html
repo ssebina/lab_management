@@ -1,0 +1,110 @@
+<script src="{{url_for('static',filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<div class="box-header with-border">
+  <h3 class="box-title">Step 1 of 1</h3>
+
+</div>
+<div class="box-body">
+ 
+<div class="row">
+  <div class="col col-md-2">
+    USERNAME:
+  </div>
+  <div class="col col-md-4">
+    <input type="text"  class="form form-control"  name="username">
+  </div>
+</div>
+
+<br> 
+
+<div class="row">
+  <div class="col col-md-2">
+    CONTACT:
+  </div>
+  <div class="col col-md-4">
+    <input type="text"  class="form form-control"  name="contact">
+  </div>
+</div>
+
+
+<br> 
+
+<div class="row">
+  <div class="col col-md-2">
+   CREATE PASSWORD:
+  </div>
+  <div class="col col-md-4">
+    <input type="password"  class="form form-control"  name="password">
+  </div>
+</div>
+
+
+
+
+</div>
+<!-- /.box-body -->
+<div class="box-footer">
+  <button class="btn btn-primary"  id="save_user"> SAVE </button>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+function ajax_post(url, data, success_callback, failure_callback){
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: success_callback,
+            error: failure_callback
+        });
+
+}
+
+
+  
+  $('#save_user').on('click', function(){
+
+    username = $('input[name=username]').val()
+    password = $('input[name=password]').val()
+    contact = $('input[name=contact]').val()
+
+    new_user_data = {'username':username, 'password':password, 'step':'one-two', 'contact':contact}
+
+    if(username == '' || password == ''){
+      alert('invalid  in puts')
+    }
+
+
+    else{
+      
+      ajax_post(
+            '/user_management/new_user',
+            new_user_data, 
+            
+            function(data){  
+
+              alert(data.resp) 
+              $('input').val('')
+
+            },
+
+            function(){ 
+             alert('failed to complete')  
+           }
+      )
+
+    }
+  
+
+  });
+
+</script>

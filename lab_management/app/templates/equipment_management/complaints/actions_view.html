@@ -1,0 +1,13 @@
+
+
+{% for action in actions %}
+
+  <tr>
+
+      <th width="40%"> {{action.author.user_name}} [{{action.action_type}}]:  </th>
+ 
+      <td>  {{action.narrative}} </td>
+
+  </tr>
+
+{%endfor%}

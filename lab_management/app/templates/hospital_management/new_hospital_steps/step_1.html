@@ -1,0 +1,145 @@
+<script src="{{url_for('static',filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<div class="box-header with-border">
+  <h3 class="box-title">Step 1 of 1</h3>
+
+</div>
+<div class="box-body">
+ 
+<div class="row">
+  <div class="col col-md-2">
+    HOSPITAL NAME:
+  </div>
+  <div class="col col-md-4">
+    <input type="text"  class="form form-control"  name="hospital_name">
+  </div>
+</div>
+
+<br>
+
+
+<div class="row">
+  <div class="col col-md-2">
+    ADMIN NAME:
+  </div>
+  <div class="col col-md-4">
+    <select id="hospital_admins" class="form form-control"></select>
+  </div>
+</div>
+
+
+<br> 
+
+<div class="row">
+  <div class="col col-md-2">
+    LOCATION:
+  </div>
+  <div class="col col-md-4">
+    <textarea rows='6' cols='20' class="form form-control"  name="hospital_location" ></textarea>
+  </div>
+</div>
+
+</div>
+<!-- /.box-body -->
+<div class="box-footer">
+  <button class="btn btn-primary"  id="save_hospital"> SAVE </button>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+function ajax_post(url, data, success_callback, failure_callback){
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: success_callback,
+            error: failure_callback
+        });
+
+}
+
+
+
+  $(document).ready(function(){
+
+
+    ajax_post(
+      '/hospital_management/new_hospital',
+      {'step':'admin-options'},
+
+      function(data){
+          data.admins_list.forEach(
+            function(_admin_){
+
+              option = document.createElement('option')
+              option.setAttribute('value', _admin_)
+
+              option.appendChild(document.createTextNode(_admin_))
+
+              $('#hospital_admins').append(option)            
+
+            }
+          )
+        },
+
+        function(){ alert('Operation Failed / check Your Network')}
+      )
+
+
+
+  })
+
+
+  
+  $('#save_hospital').click( function(){
+
+
+    hospital_name = $('input[name=hospital_name]').val()
+    hospital_location = $('textarea[name=hospital_location]').val()
+    admin_name = $('#hospital_admins').val()
+
+
+    new_hospital_data = {
+                        'hospital_name': hospital_name,
+                        'hospital_location': hospital_location,
+                        'admin_name': admin_name,
+                        'step':'one-two'}
+    
+    if(hospital_name == '' || hospital_location.length <= 4 ){
+      alert('Incomplete / Invalid Inputs')
+      
+    }
+
+
+    else{
+      
+      ajax_post(
+            '/hospital_management/new_hospital',
+            new_hospital_data, 
+            
+            function(data){  
+
+              alert(data.resp) 
+
+            },
+
+            function(){ 
+             alert('failed to complete')  
+           }
+      )
+
+    }
+  
+
+  });
+
+</script>
