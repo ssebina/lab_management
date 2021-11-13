@@ -1,21 +1,29 @@
-FROM ubuntu:latest
-
-ARG work_dir=/tmp/
-
-RUN apt update
-
-ADD requirements.txt $work_dir
-
-RUN apt-get update && apt-get install -y python3.6
-RUN apt-get install -y python3.6
-RUN apt-get install -y python3-distutils
-RUN apt-get install -y python3-pip
-
-RUN pip install --upgrade pip
-
-WORKDIR $work_dir
-RUN pip install -r requirements.txt
+# For more information, please refer to https://aka.ms/vscode-docker-python
+FROM python:3.8-slim-buster
 
 EXPOSE 3000
 
-CMD ["python", "/usr/local/lab_management/run.py"]
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+# Install pip requirements
+COPY requirements.txt .
+RUN python -m pip install -r requirements.txt
+
+
+WORKDIR /usr/local/lab_management
+# COPY . /app
+
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /usr/local/lab_management
+USER appuser
+
+# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
+#CMD ["uvicorn", "--bind", "0.0.0.0:3000","-w" ,"15", "-m", "007", "run:app"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:3000","-w" ,"15", "-m", "007", "run:app"]
+
+# CMD ["python3", "/usr/local/lab_management/run.py"]
