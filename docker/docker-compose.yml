@@ -4,8 +4,16 @@ services:
   lab_management:
     container_name: lab_management
     build: lab_app
-    
+
     ports:
       - 3000:3000
     volumes:
       - ../lab_management:/usr/local/lab_management/
+
+  nginx:
+    container_name: nginx
+    build: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/log:/var/log/nginx

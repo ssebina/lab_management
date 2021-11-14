@@ -1,0 +1,12 @@
+server {
+
+	listen 80;
+	#server_name www.mem-system.online mem-system.online;
+
+	location / {
+
+		include proxy_params;
+		proxy_pass http://lab_management:3000;
+	}
+}
+
