@@ -9,11 +9,21 @@ services:
       - 3001:3001
     volumes:
       - ../lab_management:/usr/local/lab_management/
+    networks:
+      - lab_management_net
 
   nginx:
-    container_name: nginx
+    container_name: lab_nginx
     build: nginx
     ports:
       - 80:80
     volumes:
       - ./nginx/log:/var/log/nginx
+    networks:
+      - lab_management_net
+    depends_on:
+      - lab_management
+
+networks:
+  lab_management_net:
+    driver: bridge
