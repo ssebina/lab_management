@@ -6,7 +6,7 @@ services:
     build: lab_app
 
     ports:
-      - 3000:3000
+      - 3001:3001
     volumes:
       - ../lab_management:/usr/local/lab_management/
 
