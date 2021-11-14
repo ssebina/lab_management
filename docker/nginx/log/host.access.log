@@ -30,3 +30,4 @@
 172.29.0.1 - - [14/Nov/2021:11:56:36 +0000] "GET /auth/login?next=%2F HTTP/1.1" 200 3369 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" "-"
 172.29.0.1 - - [14/Nov/2021:12:02:21 +0000] "GET / HTTP/1.1" 302 247 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" "-"
 172.29.0.1 - - [14/Nov/2021:12:02:21 +0000] "GET /auth/login?next=%2F HTTP/1.1" 200 3369 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" "-"
+172.29.0.1 - - [14/Nov/2021:12:27:27 +0000] "GET /auth/login?next=%2F HTTP/1.1" 200 3369 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" "-"
