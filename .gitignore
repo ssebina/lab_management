@@ -4,3 +4,5 @@
 .DS_Store
 docker/nginx/log/host.access.log
 *.log
+.DS_Store
+lab_management/.DS_Store
