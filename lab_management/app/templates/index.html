@@ -1,0 +1,167 @@
+{% extends "mainbase.html" %}
+
+{% block body %}
+
+
+<!-- Site wrapper -->
+<div class="wrapper">
+
+{% include  "menu_and_headers/header.html" %}
+
+  <!-- =============================================== -->
+
+{% include "menu_and_headers/side_menu.html" %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+       Complaits History / List
+        <small> List of Complaits in Decending Order</small>
+      </h1>
+  <br><br>
+
+  <div class="row">
+
+        <div class="col-md-2">
+            Date From
+            <input type="date" class="form-control" id="date-from">
+        </div>
+
+        <div class="col-md-2">
+            Date To
+            <input type="date" class="form-control" id="date-to">
+        </div>
+
+        <div class="col-md-2">
+            Source / Location
+            <input type="text" class="form-control" id="source" placeholder="Source">
+        </div>
+
+        <div class="col-md-2">
+            Status
+            <select type="select" class="form-control" id="status" placeholder="status">
+                <option value="">ALL</option>
+                <option value="captured"> Captured </option>
+                <option value="not captured"> Not Captured </option>
+                <option value="completed"> COMPLETED </option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <br/>
+            <button class="form-control btn btn-sm btn-primary" id="update"> UPDATE </button>
+        </div>
+
+    </div>
+
+    </section>
+    <hr>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">All Complaits Table</h3>
+              <div class="box-tools">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                  <li><a href="#">&laquo;</a></li>
+                  <li><a href="#">1</a></li>
+                  <li><a href="#">2</a></li>
+                  <li><a href="#">3</a></li>
+                  <li><a href="#">&raquo;</a></li>
+                </ul>
+              </div>              
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-condensed table-hover">
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Date</th>
+                  <th>Source</th>
+                  <th>Brief Description</th>
+                  <th>Action</th>
+                  <th style="width: 40px">Status</th>
+                </tr>
+                <tr>
+                  <td>1.</td>
+                  <td>23/03/2020</td>
+                  <td>Main Hospital</td>
+                  <td>Update software</td>
+                  <td>
+                    <button class="btn btn-xs btn-default"> View Details</button>
+
+                  </td>
+                  <td><span class="badge bg-red">Not Captured</span></td>
+                </tr>
+                <tr>
+                  <td>2.</td>
+                  <td>23/03/2020</td>
+                  <td>Main Hospital</td>
+                  <td>Clean database</td>
+                  <td>
+                    <button class="btn btn-xs btn-default"> View Details</button>
+                  </td>
+                  <td><span class="badge bg-yellow">Captured</span></td>
+                </tr>
+                <tr>
+                  <td>3.</td>
+                  <td>23/03/2020</td>
+                  <td>Main Hospital</td>
+                  <td>Cron job running</td>
+                  <td>
+                      <button class="btn btn-xs btn-default"> View Details</button>
+                  </td>
+                  <td><span class="badge bg-light-blue">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>4.</td>
+                  <td>23/03/2020</td>
+                  <td>Main Hospital</td>
+                  <td>Fix and squish bugs</td>
+                  <td>
+                    <button class="btn btn-xs btn-default"> View Details</button>
+                  </td>
+                  <td><span class="badge bg-green">Completed</span></td>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+<!-- ./wrapper -->
+
+
+<!-- JQuery importing -->
+<script src="{{url_for('static',filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<script type="text/javascript">
+  
+  $('#update').on('click', function(){
+
+      var date_from = $('#date-from').val();
+      var date_to = $('#date-to').val();
+
+      var source = $('#source').val();
+      var status = $('#status').val();
+
+      alert(date_from)
+
+  })
+
+
+</script>
+
+
+
+{% endblock %}

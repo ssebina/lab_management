@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  lab_management:
+    container_name: lab_management
+    build: lab_app
+    command: ["bash"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ../lab_management:/usr/local/lab_management/

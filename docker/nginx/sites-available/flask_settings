@@ -1,0 +1,181 @@
+########################################################   SUNDA SERVICES #######################
+server {
+
+	listen 80;
+	server_name 178.128.65.113 www.sundaug.com;
+	
+	location / {
+		include proxy_params;
+		proxy_pass http://127.0.0.1:3000;
+	}
+
+
+}
+
+#########################################################  M210 SERVICES #############################
+
+#server {
+#    if ($host = mak-m210.online) {
+#       return 301 https://www.mak-m210.online$request_uri;
+#   } 
+
+	# managed by Certbot
+#	server_name unbs.mak-m210.online www.mak-m210.online;
+	#return 301 https://www.mak-m210.online$request_uri;
+
+
+
+
+
+#  listen 443 ssl; # managed by Certbot
+	
+#    ssl_certificate /etc/letsencrypt/live/www.mak-m210.online/fullchain.pem; # managed by Certbot
+#    ssl_certificate_key /etc/letsencrypt/live/www.mak-m210.online/privkey.pem; # managed by Certbot
+#    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+#    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+#	location /{
+#			include proxy_params;
+#			proxy_pass http://127.0.0.1:4000;
+
+#		}
+#}
+
+
+
+
+
+###################  ATYO.ONLINE server proxifyng at port 7033 #################
+
+server {
+
+	if ($host = www.atyo.online){
+		return 301 https://atyo.online$request_uri;
+	}
+	server_name atyo.online www.atyo.online;
+
+	location /{
+
+		include proxy_params;
+		proxy_pass http://127.0.0.1:7033;
+
+	}
+
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/atyo.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/atyo.online/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+
+
+#server {
+
+#	listen 80;
+#	server_name www.atyo.online atyo.online;
+#	return 301 https://atyo.online$request_uri;   
+	# return 404; # managed by Certbot
+
+
+#}
+
+
+
+############################################################# IOT MARVIN #############################################
+
+server {
+	listen 80;
+	server_name www.run.atyo.online run.atyo.online;
+
+	location / {
+		include proxy_params;
+		proxy_pass http://127.0.0.1:7570;  # this is marvins number 
+	}
+
+
+    #listen 443 ssl; # managed by Certbot
+    #ssl_certificate /etc/letsencrypt/live/run.atyo.online/fullchain.pem; # managed by Certbot
+    #ssl_certificate_key /etc/letsencrypt/live/run.atyo.online/privkey.pem; # managed by Certbot
+    #include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    #ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+        location /socket.io {
+
+	        include proxy_params;
+		proxy_http_version 1.1;
+		proxy_buffering off;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "Upgrade";
+		proxy_pass http://127.0.0.1:7570/socket.io;
+	}
+
+}
+
+
+server {
+    if ($host = run.atyo.online) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	
+	listen 80;
+	server_name www.run.atyo.online run.atyo.online;
+    return 404; # managed by Certbot
+
+
+}
+
+
+########################################################################## THIS IS THE MONITOR AT  5003 ###########
+
+server {
+
+	listen 80;
+	server_name monitor.atyo.online;
+
+	location /{
+
+		include proxy_params;
+		proxy_pass http://127.0.0.1:5003;
+	}
+	
+	        location /socket.io {
+
+                include proxy_params;
+                proxy_http_version 1.1;
+                proxy_buffering off;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "Upgrade";
+                proxy_pass http://127.0.0.1:5003/socket.io;
+        }	
+
+}
+
+
+#server {
+#    if ($host = www.mak-m210.online) {
+#        return 301 https://$host$request_uri;
+#    } # managed by Certbot
+
+
+
+
+#	listen 80;
+#	server_name mak-m210.online www.mak-m210.online;
+
+	#location/{
+	#	include proxy_params;
+	#	proxy_pass http://127.0.0.1:4000;
+	#	}	
+
+#    return 404; # managed by Certbot
+
+
+#}

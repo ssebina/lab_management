@@ -1,0 +1,226 @@
+
+<div class="steps_display" id="steps_display">
+  <div id="step_1">
+    <div class="box-header with-border">
+      <h3 class="box-title">Step 1 of 2</h3>
+
+    </div>
+    <div class="box-body">
+
+    <div class="row">
+      <div class="col col-md-2">
+        HOSPITAL NAME:
+      </div>
+      <div class="col col-md-4">
+        <select id="hospital_name" class="form form-control"></select>
+      </div>
+    </div>
+
+
+    <br> 
+
+
+    <div class="row">
+      <div class="col col-md-2">
+        DEPARTMENT NAME:
+      </div>
+      <div class="col col-md-4">
+        <input type='text' id="department_name" class="form form-control"></input>
+      </div>
+    </div>
+
+
+    <br>  
+     
+    <div class="row">
+      <div class="col col-md-2">
+        EQUIPMENT NAME:
+      </div>
+      <div class="col col-md-4">
+        <input type="text"  class="form form-control"  id="equipment_name">
+      </div>
+    </div>
+
+    <br>
+
+     
+
+
+    <div class="row">
+      <div class="col col-md-2">
+        MACHINE MODEL :
+      </div>
+      <div class="col col-md-4">
+        <input type='text' id="machine_model" class="form form-control"></input>
+      </div>
+    </div>
+
+
+    <br> 
+
+    <div class="row">
+      <div class="col col-md-2">
+        SERIAL No./ ENGRAVED No.:
+      </div>
+      <div class="col col-md-4">
+        <input type='text' id="serial_number" class="form form-control"></input>
+      </div>
+    </div>
+
+
+    <br> 
+
+    <div class="row">
+      <div class="col col-md-2">
+        SECTION / ROOM:
+      </div>
+      <div class="col col-md-4">
+        <input type='text' id="room_number" class="form form-control"></input>
+      </div>
+    </div>
+
+
+    <br> 
+
+    <div class="row">
+      <div class="col col-md-2">
+       MODEL NUMBER:
+      </div>
+      <div class="col col-md-4">
+        <input type='text' id="sticker_information" class="form form-control"></input>
+      </div>
+    </div>
+
+
+    <br> 
+
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+      <button class="btn btn-primary  next"  id="next"> Next </button>
+    </div>
+
+  </div>
+  <!-- end of step 1 -->
+
+</div> 
+<!--  End of the Display Areas for Steps -->
+
+<!-- import step 2 -->
+
+{% include "equipment_management/new_equipment_steps/step_2.html" %}
+
+
+
+<script type="text/javascript">
+
+
+
+
+function ajax_post(url, data, success_callback, failure_callback){
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: success_callback,
+            error: failure_callback
+        });
+
+}
+
+
+
+  $(document).ready(function(){
+
+
+    ajax_post(
+      '/equipment_management/new_equipment',
+      {'step':'hospital_list'},
+
+      function(data){
+          data.hospitals.forEach(
+            function(_hospital_){
+
+              option = document.createElement('option')
+              option.setAttribute('value', _hospital_)
+
+              option.appendChild(document.createTextNode(_hospital_))
+
+              $('#hospital_name').append(option)            
+
+            }
+          )
+        },
+
+        function(){ alert('Operation Failed / check Your Network')}
+      )
+
+
+
+  })
+
+
+  
+  $('#save_hospital').click( function(){
+
+
+    valid_data = true;
+
+    new_equipment_data = {'step':'one-two'}
+
+    input_values = $('.form-control')
+
+    for (var i = input_values.length - 1; i >= 0; i--) {
+        
+        if (input_values.eq(i).val() == '' || input_values.eq(i).val() == undefined){
+            valid_data = false
+        }
+
+        new_equipment_data[input_values.eq(i).attr('id')] = input_values.eq(i).val()
+        
+    }
+
+
+    if(!valid_data ){
+
+      alert('Incomplete / Invalid Inputs')      
+    }
+
+    else{
+      
+      ajax_post(
+            '/equipment_management/new_equipment',
+            new_equipment_data, 
+            
+            function(data){  
+              alert(data.resp) 
+            },
+            function(){ 
+             alert('failed to complete')  
+           }
+      )
+
+    }
+  
+
+  });
+
+
+
+
+  $step_1 = $('#step_1').html();
+  $step_2 = $('#step_2').html();
+
+
+  $('#next').click(function(){
+    $('#steps_display').html($step_2 )
+  })
+
+  $('#back').click(function(){
+    $('#steps_display').html($step_1)
+  })
+
+</script>

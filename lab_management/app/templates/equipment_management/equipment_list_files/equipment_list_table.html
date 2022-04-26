@@ -1,0 +1,176 @@
+ <table class="table table-condensed table-hover">
+      <tr>
+        <th style="width: 10px">#</th>
+        <th>Name</th>
+        <th>Hospital</th>
+        <th>Department</th>
+        <th>Action</th>
+      </tr>
+
+      {% for e in equipment %}
+
+      <tr>
+        <td >{{loop.index}}</td>
+        <td class='equipment_name' id='{{e.name}}'>{{e.name}}</td>
+        <td>{{e.hospital.name}}</td>
+        <td>{{e.department}}</td>
+        <td>
+
+          <button class="btn btn-xs btn-default" data-equipment='{{e.id}}' data-toggle="modal" data-target="#equipmentModel"> View Details</button>
+          {% if current_user.has_permission(Permission.CAN_ENDOSE) %}
+          <button class="btn btn-xs btn-success" data-equipment='{{e.id}}' data-toggle="modal" data-target="#newComplaint"> New Complaint</button>{% endif %}
+
+        </td>
+
+            
+      </tr>
+
+      {% endfor %}
+
+
+</table>
+
+
+
+
+<div class="modal fade" id="equipmentModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Equipment Details </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Loading Details...
+               
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="newComplaint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLongTitle"><u> New Complait Form for : </u></h4>
+        <h5 id="equipment_name"> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          
+          <div class="col-md-3"> Complait Narrative</div>
+
+          <div class="col-md-9">
+            <textarea cols="40" rows="10" id="narrative"></textarea>
+          </div>
+
+        </div>        
+               
+      </div>
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-primary" id="save_complaint">Save Complait</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+
+
+var equipment_id = 0
+
+
+function ajax_post(url, data, success_callback, failure_callback){
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: success_callback,
+            error: failure_callback
+        });
+
+}
+
+
+
+  $('#equipmentModel').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var equipment_id = button.data('equipment')
+  var modal = $(this)
+
+  ajax_post('equipment_list', {'step': 'equipment_details', 'equipment_id' : equipment_id},
+
+            function(data){
+              modal.find('.modal-body').html(data.details)             
+            },
+
+            function(){
+              alert('network Error')
+            }
+    )
+})
+
+
+
+  $('#newComplaint').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+   equipment_id = button.data('equipment')
+  var modal = $(this)
+
+  $('#equipment_name').html(button.parents('tr').find('.equipment_name').attr('id'))
+
+})
+
+
+  $("#save_complaint").on('click', function(){
+
+
+    narrative = $('#narrative').val()
+    // alert(narrative)
+
+    if(narrative.length > 6 ){
+
+      ajax_post('equipment_list', {'step': 'new_complaint', 'equipment_id' : equipment_id, 'narrative' : narrative},
+
+            function(data){
+              alert(data.resp)  
+              $('#newComplaint').modal('hide')
+              $('#narrative').val("")
+
+            },
+
+            function(){
+              alert('network Error')
+            }
+      )      
+
+    }
+
+    else {
+      alert('Ivalid Narative Length ')
+    }
+
+  
+
+  })
+</script>
